@@ -17,6 +17,8 @@ from my_commands.crypto_coin_gpt import crypto_gpt
 from linebot.exceptions import LineBotApiError, InvalidSignatureError
 from my_commands.stock.stock_gpt import stock_gpt
 from my_commands.girlfriend_gpt import girlfriend_gpt
+from app import app  # 假設你的 Flask 應用定義在 app.py 中
+
 
 app = Flask(__name__)
 
