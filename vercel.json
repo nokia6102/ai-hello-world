@@ -1,16 +1,12 @@
 {
-  "redirects": [
-    {
-      "source": "/",
-      "destination": "/api"
-    }
+  "version": 2,
+  "builds": [
+      {
+          "src": "app.py",
+          "use": "@vercel/python"
+      }
   ],
-  "functions": {
-    "api/callback": {
-      "runtime": "vercel-python@3.9"
-    },
-    "api/healthz": {
-      "runtime": "vercel-python@3.9"
-    }
-  }
+  "routes": [
+      {"src": "/(.*)", "dest": "/app.py"}
+  ]
 }
