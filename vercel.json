@@ -1,6 +1,10 @@
 {
-  "redirects": [{ "source": "/", "destination": "/api" }]
-  ,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/api"
+    }
+  ],
   "functions": {
     "api/callback": {
       "runtime": "vercel-python@3.9"
@@ -8,4 +12,5 @@
     "api/healthz": {
       "runtime": "vercel-python@3.9"
     }
+  }
 }
