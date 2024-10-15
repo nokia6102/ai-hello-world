@@ -1,5 +1,3 @@
-from http.server import BaseHTTPRequestHandler
-
 import re
 import pandas as pd
 from flask import Flask, request, abort
@@ -198,13 +196,15 @@ def health_check():
 def vercel_handler(request):
     return app(request)
 
-
-
-class handler(BaseHTTPRequestHandler):
-
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type','text/plain')
-        self.end_headers()
-        self.wfile.write('Hello, world!2'.encode('utf-8'))
-        return
+# 設定 vercel.json
+# 在 vercel.json 中應定義：
+# {
+#   "functions": {
+#     "api/callback": {
+#       "runtime": "vercel-python@3.9"
+#     },
+#     "api/healthz": {
+#       "runtime": "vercel-python@3.9"
+#     }
+#   }
+# }
