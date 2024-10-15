@@ -274,8 +274,6 @@ def welcome(event):
 def health_check():
     return 'OK', 200
 
-# 啟動應用
-app = Flask(__name__)
 
 # 定義路由和邏輯
 
