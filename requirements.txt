@@ -1,4 +1,4 @@
-Flask==2.2.0  # 與新版 Werkzeug 兼容
+Flask==2.2.0 
 gunicorn
 Werkzeug==2.2.0  # 適合 Flask 2.2.0
 line-bot-sdk==2.4.3  # 用於 LINE Bot 的 SDK
@@ -9,7 +9,5 @@ beautifulsoup4 # 用於網頁解析的 BeautifulSoup
 yfinance
 pandas
 urllib3
-line-bot-sdk
-requests
 numpy
 openai
