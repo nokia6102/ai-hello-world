@@ -278,7 +278,7 @@ def health_check():
 if __name__ == "__main__":
     port = int(os.environ.get('PORT', 5000))
     try:
-        update_line_webhook()  # 啟動時自動更新 Webhook URL
+        # update_line_webhook()  # 啟動時自動更新 Webhook URL
         app.run(host='0.0.0.0', port=port)
     except Exception as e:
         print(f"伺服器啟動失敗: {e}")
