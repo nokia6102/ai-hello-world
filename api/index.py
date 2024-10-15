@@ -196,15 +196,4 @@ def health_check():
 def vercel_handler(request):
     return app(request)
 
-# 設定 vercel.json
-# 在 vercel.json 中應定義：
-# {
-#   "functions": {
-#     "api/callback": {
-#       "runtime": "vercel-python@3.9"
-#     },
-#     "api/healthz": {
-#       "runtime": "vercel-python@3.9"
-#     }
-#   }
-# }
+print ("v.0002")
