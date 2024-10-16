@@ -277,6 +277,11 @@ def health_check():
     return 'OK', 200
 
 
+@app.route('/', methods=['GET'])
+def health_check():
+    return 'html OK', 200
+
+
 # 定義路由和邏輯
 
 # 不需要這段
