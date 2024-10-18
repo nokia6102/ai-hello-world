@@ -10,3 +10,4 @@ yfinance
 pandas
 urllib3
 numpy
+openai==0.27.0  # 明確指定 openai 版本
