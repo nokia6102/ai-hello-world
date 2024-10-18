@@ -3,7 +3,6 @@ import time
 import pandas as pd
 import requests
 from bs4 import BeautifulSoup
-import openai
 from groq import Groq
 
 # 初始化 GROQ API 客戶端
@@ -16,46 +15,36 @@ GROQ_REQUEST_INTERVAL = 60  # 請根據實際需求調整
 # 定義 get_reply 函數
 def get_reply(messages):
     global groq_tokens_used, groq_last_request_time
-
     try:
-        response = openai.ChatCompletion.create(
-            model="gpt-3.5-turbo-1106",
-            messages=messages
+        request_tokens = sum(len(message['content']) for message in messages)
+
+        current_time = time.time()
+        if groq_tokens_used + request_tokens > GROQ_RATE_LIMIT:
+            wait_time = GROQ_REQUEST_INTERVAL - (current_time - groq_last_request_time)
+            if wait_time > 0:
+                print(f"超過速率限制，等待 {wait_time} 秒...")
+                time.sleep(wait_time)
+            groq_tokens_used = 0
+            groq_last_request_time = time.time()
+
+        response = groq_client.chat.completions.create(
+            model="mixtral-8x7b-32768",
+            messages=messages,
+            max_tokens=1500,
+            temperature=1.2
         )
-        reply = response["choices"][0]["message"]["content"]
-    except openai.OpenAIError as openai_err:
-        try:
-            request_tokens = sum(len(message['content']) for message in messages)
-
-            current_time = time.time()
-            if groq_tokens_used + request_tokens > GROQ_RATE_LIMIT:
-                wait_time = GROQ_REQUEST_INTERVAL - (current_time - groq_last_request_time)
-                if wait_time > 0:
-                    print(f"超過速率限制，等待 {wait_time} 秒...")
-                    time.sleep(wait_time)
-                groq_tokens_used = 0
-                groq_last_request_time = time.time()
-
-            response = groq_client.chat.completions.create(
-                model="mixtral-8x7b-32768",
-                messages=messages,
-                max_tokens=1500,
-                temperature=1.2
-            )
-            reply = response.choices[0].message.content
-            groq_tokens_used += request_tokens
-        except Groq.RateLimitError as rate_err:
-            print("遇到 RateLimitError，等待 15 秒...")
-            time.sleep(15)
-            response = groq_client.chat.completions.create(
-                model="mixtral-8x7b-32768",
-                messages=messages,
-                max_tokens=1500,
-                temperature=1.2
-            )
-            reply = response.choices[0].message.content
-        except Exception as groq_err:
-            reply = f"OpenAI API 發生錯誤: {openai_err.error.message}, GROQ API 發生錯誤: {groq_err.message}"
+        reply = response.choices[0].message.content
+        groq_tokens_used += request_tokens
+    except Groq.RateLimitError as rate_err:
+        print("遇到 RateLimitError，等待 15 秒...")
+        time.sleep(15)
+        response = groq_client.chat.completions.create(
+            model="mixtral-8x7b-32768",
+            messages=messages,
+            max_tokens=1500,
+            temperature=1.2
+        )
+        reply = response.choices[0].message.content
     return reply
 
 # 獲取並處理鉑金數據
