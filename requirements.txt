@@ -1,13 +1,12 @@
-Flask==2.2.0 
+Flask==2.2.0
 gunicorn
-Werkzeug==2.2.0  # 適合 Flask 2.2.0
-line-bot-sdk==2.4.3  # 用於 LINE Bot 的 SDK
-requests==2.31.0  # 用於 HTTP 請求的庫
+Werkzeug==2.2.0
+line-bot-sdk==2.4.3
+requests==2.31.0
 groq
-taiwanlottery  # 正確的 TaiwanLottery 套件名稱
-beautifulsoup4 # 用於網頁解析的 BeautifulSoup
+taiwanlottery
+beautifulsoup4
 yfinance
 pandas
 urllib3
 numpy
-openai
