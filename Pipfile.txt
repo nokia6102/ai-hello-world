@@ -7,4 +7,4 @@ name = "pypi"
 flask = "2.3.2"
  
 [requires]
-python_version = "3.11.3"
+python_version = "3.9"
