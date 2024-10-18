@@ -10,3 +10,4 @@ yfinance
 pandas
 urllib3
 numpy
+openai
