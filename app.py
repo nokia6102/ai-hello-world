@@ -17,14 +17,13 @@ from my_commands.crypto_coin_gpt import crypto_gpt
 from linebot.exceptions import LineBotApiError, InvalidSignatureError
 from my_commands.stock.stock_gpt import stock_gpt
 from my_commands.girlfriend_gpt import girlfriend_gpt
-from app import app  # 假設你的 Flask 應用定義在 app.py 中
 
+# 正確的 Flask 初始化位置
+app = Flask(__name__)
 
 @app.route('/')
 def hello():
     return "Hello, World!"
-
-app = Flask(__name__)
 
 # 管理每個聊天室的角色模式（獨立狀態）
 chat_roles = {}
@@ -83,29 +82,6 @@ def check_line_webhook():
     else:
         print(f"檢查 Webhook URL 失敗，狀態碼: {response.status_code}, 原因: {response.text}")
         return None
-
-
-def start_loading_animation(chat_id, loading_seconds=5):
-    url = 'https://api.line.me/v2/bot/chat/loading/start'
-    headers = {
-        'Content-Type': 'application/json',
-        "Authorization": f"Bearer {os.getenv('CHANNEL_ACCESS_TOKEN')}",
-    }
-    data = {
-        "chatId": chat_id,
-        "loadingSeconds": loading_seconds
-    }
-
-    try:
-        response = requests.post(url, headers=headers, json=data)
-        if response.status_code == 200:
-            return response.status_code, response.json()  # 回傳JSON格式
-        else:
-            print(f"Error: {response.status_code}, {response.text}")
-            return response.status_code, response.text
-    except requests.exceptions.RequestException as e:
-        print(f"Exception during API request: {e}")
-        return None, str(e)
 
 # 更新 LINE Webhook URL 的函數
 def update_line_webhook():
@@ -184,7 +160,7 @@ def handle_message(event):
     #單人才會顯示 (...)
     if event.source.type == 'user':
         start_loading_animation(chat_id=chat_id, loading_seconds=5)
-        
+
     # 定義彩種關鍵字列表
     lottery_keywords = ["威力彩", "大樂透", "539", "雙贏彩", "3星彩", "三星彩", "4星彩", "四星彩", "38樂合彩", "39樂合彩", "49樂合彩", "運彩"]
 
@@ -279,14 +255,3 @@ def welcome(event):
 @app.route('/healthz', methods=['GET'])
 def health_check():
     return 'OK', 200
-
-
-# 定義路由和邏輯
-
-# 不需要這段
-# if __name__ == "__main__":
-#     port = int(os.environ.get('PORT', 5000))
-#     try:
-#         app.run(host='0.0.0.0', port=port)
-#     except Exception as e:
-#         print(f"伺服器啟動失敗: {e}")
